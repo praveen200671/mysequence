@@ -6,6 +6,6 @@ import lombok.ToString;
 @Data
 @ToString
 public class StepMasterRequest {
-	private int id;
+	
 
 }

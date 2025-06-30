@@ -11,12 +11,13 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
+@ToString
 @Entity
 @Table(name = "template")
 public class TemplateEntity {
@@ -38,6 +39,9 @@ public class TemplateEntity {
 
     @Column(name = "modified_on")
     private String modifiedOn;
+    
+    @Column(name = "template_id")
+    private int templateId;
 
     
 

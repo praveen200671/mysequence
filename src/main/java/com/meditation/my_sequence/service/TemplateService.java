@@ -1,26 +1,63 @@
 package com.meditation.my_sequence.service;
 
+import java.util.Optional;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.format.datetime.DateFormatter;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import com.meditation.my_sequence.MySequenceApplication;
 import com.meditation.my_sequence.dto.TemplateEntity;
 import com.meditation.my_sequence.model.TemplateResponse;
 import com.meditation.my_sequence.repositories.TemplateRepository;
 
 @Service
 public class TemplateService {
-	
+
+	private static final Logger logger = LogManager.getLogger(VerifyOTPService.class);
 	@Autowired
 	TemplateRepository templateRepository;
-	
-	public TemplateResponse Template(String datetime, String type)
-	{
-	  TemplateEntity template=templateRepository.findByType(type);
-		  if (template.getModifiedOn().equalsIgnoreCase(datetime)) {
-	            return new TemplateResponse("success", "No change in policy", "200",1,null,null,null,null);          
-	        } else {	
-	        	return new TemplateResponse("success", "Policy updated", "200",template.getId(),template.getType(),template.getTemplate(),template.getTemplateDesc(),template.getCreatedOn());      
-	        }
+
+	public TemplateResponse getTemplate(int id) {
+		TemplateResponse templateResponse = new TemplateResponse();
+
+		try {
+			logger.info("inside TemplateService... finding by template id................");
+			Optional<TemplateEntity> templateOptional = templateRepository.findByTemplateId(id);
+			logger.info("inside TemplateService... find by template id");
+			if (id == 1002 || id == 1003) {
+				if (templateOptional.isPresent()) {
+					TemplateEntity templateEntity = templateOptional.get();
+
+					logger.info("inside TemplateService... find by template id present");
+					// TemplateResponse templateResponse=new TemplateResponse();
+					templateResponse.setStatus("success");
+					templateResponse.setMessage("Updated details");
+					templateResponse.setStatuscode(HttpStatus.OK + "");
+					templateResponse.setId(id);
+					templateResponse.setTemplate(templateEntity.getTemplate());
+					return templateResponse;
+				}
+				logger.info("inside TemplateService... find by template id not present");
+				templateResponse.setStatus("success");
+				templateResponse.setMessage("Record Not Found");
+				templateResponse.setStatuscode(HttpStatus.NO_CONTENT + "");
+				// return templateResponse;
+
+			}
+
+		} catch (Exception e) {
+			logger.error("Exception   " + e.getMessage() + "... occurred....in " + getClass().getName());
+			// throw new Exception();
+			templateResponse.setStatus("fialed");
+			templateResponse.setMessage("Exception occurred...." + e.getMessage());
+			templateResponse.setStatuscode(HttpStatus.NO_CONTENT + "");
+			// return templateResponse;
+		}
+		return templateResponse;
 	}
 
 }

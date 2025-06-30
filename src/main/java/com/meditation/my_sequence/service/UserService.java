@@ -23,7 +23,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository; 
 
-    public UserResponse registerDevice(UserRequest user) {
+    public UserResponse updateUser(UserRequest user) {
         // Check if device already exists for this user
     	try {
         Optional<UserEntity> userinfoOptional= userRepository.findById(
@@ -31,43 +31,81 @@ public class UserService {
         );
         
         
+       UserResponse userResponse=new UserResponse();
        
         if (userinfoOptional.isPresent() ==true) {
             // Update existing device
-        	UserEntity userinfo= userinfoOptional.get();
-        	userinfo.setName(user.getName());
-        	userinfo.setEmail(user.getEmail());
-        	userinfo.setMobile(user.getMobile());
-        	userinfo.setPhotoUrl(user.getPhotoUrl());
-        	userinfo.setAge(user.getAge());
-        	userinfo.setCountry(user.getCountry());
-        	userinfo.setGender(user.getGender());
-        	userinfo.setCity(user.getCity());
-        	userinfo.setLat(user.getLat());
-        	userinfo.setLongitude(user.getLongitude());
-        	userRepository.save(userinfo);
+        	UserEntity userInfo= userinfoOptional.get();
+        	userInfo.setName(user.getName());
+        	userInfo.setEmail(user.getEmail());
+        	userInfo.setMobile(user.getMobile());
+        	userInfo.setPhotoUrl(user.getPhotoUrl());
+        	userInfo.setAge(user.getAge());
+        	userInfo.setCountry(user.getCountry());
+        	userInfo.setGender(user.getGender());
+        	userInfo.setCity(user.getCity());
+        	userInfo.setLat(user.getLat());
+        	userInfo.setLongitude(user.getLongitude());
+        	userRepository.save(userInfo);
+        	
+        	userResponse.setId(user.getId());
+        	userResponse.setName(user.getName());
+        	userResponse.setEmail(user.getEmail());
+        	userResponse.setMobile(user.getMobile());
+        	userResponse.setPhotoUrl(user.getPhotoUrl());
+        	userResponse.setAge(user.getAge());
+        	userResponse.setCountry(user.getCountry());
+        	userResponse.setGender(user.getGender());
+        	userResponse.setCity(user.getCity());
+        	userResponse.setLat(user.getLat());
+        	userResponse.setLongitude(user.getLongitude());
+        	
+        	
+        	
+        	return userResponse;
+        	
+        	
         }
         else
         {
-        	UserEntity userentity=new UserEntity();
-        	userentity.setName(user.getName());
-        	userentity.setEmail(user.getEmail());
-        	userentity.setMobile(user.getMobile());
-        	userentity.setPhotoUrl(user.getPhotoUrl());
-        	userentity.setAge(user.getAge());
-        	userentity.setCountry(user.getCountry());
-        	userentity.setGender(user.getGender());
-        	userentity.setCity(user.getCity());
-        	userentity.setLat(user.getLat());
-        	userentity.setLongitude(user.getLongitude());
-        	userRepository.save(userentity);
+        	UserEntity userInfo=new UserEntity();
+        	userInfo.setName(user.getName());
+        	userInfo.setEmail(user.getEmail());
+        	userInfo.setMobile(user.getMobile());
+        	userInfo.setPhotoUrl(user.getPhotoUrl());
+        	userInfo.setAge(user.getAge());
+        	userInfo.setCountry(user.getCountry());
+        	userInfo.setGender(user.getGender());
+        	userInfo.setCity(user.getCity());
+        	userInfo.setLat(user.getLat());
+        	userInfo.setLongitude(user.getLongitude());
+        	userRepository.save(userInfo);
+        	 Optional<UserEntity> optionalUserEntity =userRepository.findByEmail(user.getEmail());
+                    
+               if(optionalUserEntity.isPresent())
+               {
+            	userInfo =optionalUserEntity.get();
+            	userResponse.setId(userInfo.getId());
+               	userResponse.setName(userInfo.getName());
+               	userResponse.setEmail(userInfo.getEmail());
+               	userResponse.setMobile(userInfo.getMobile());
+               	userResponse.setPhotoUrl(userInfo.getPhotoUrl());
+               	userResponse.setAge(userInfo.getAge());
+               	userResponse.setCountry(userInfo.getCountry());
+               	userResponse.setGender(userInfo.getGender());
+               	userResponse.setCity(userInfo.getCity());
+               	userResponse.setLat(userInfo.getLat());
+               	userResponse.setLongitude(userInfo.getLongitude());
+            	   
+               }
         	
+        	 return userResponse;
         	
         }
-        return null;//new UserResponse("success","User data saved successfully.");
+       
     	}
     	catch (Exception e) {
-    		 return null;//new UserResponse("failed","Request failed.");
+    		 return new UserResponse();//new UserResponse("failed","Request failed.");
 		}
 
     }

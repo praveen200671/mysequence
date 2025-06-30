@@ -26,7 +26,7 @@ import lombok.ToString;
 public class GenerateOTPEntity {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String otp;
 	@Column(name="otp_key")

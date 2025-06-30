@@ -13,18 +13,27 @@ public class StepsMasterEntity {
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private Integer id;
 
+	    @Column(length = 100)
+	    private String category;
+	    
+	    @Column(name = "modified_on")
+	    private LocalDateTime modifiedOn;
+	    
 	    @Column(name = "step_name", length = 100)
 	    private String stepName;
 
-	    @Column(columnDefinition = "TEXT")
-	    private String url;
-
 	    @Column(name = "step_desc", length = 100)
 	    private String stepDesc;
+	    
+	   
+	    @Column(name = "file_name", length = 200)
+	    private String fileName;
 
-	    @Column(length = 100)
-	    private String category;
+	    @Column(name = "url", length = 200)
+	    private String fileUrl;
+	  
 
-	    @Column(name = "modified_on")
-	    private LocalDateTime modifiedOn;
+	  
+
+	  
 }
